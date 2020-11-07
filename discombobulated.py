@@ -103,8 +103,11 @@ async def announce(message, client):
 
 	for chan in f:
 		print(chan)
-		this_channel = client.get_channel(chan)
-		await this_channel.send(announcement)
+		try:
+			this_channel = client.get_channel(chan)
+			await this_channel.send(announcement)
+		except:
+			print(chan)
 	await message.channel.send("The announcement has been sent to all teams.")
 
 	c.close()
