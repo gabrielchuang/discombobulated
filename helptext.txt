@@ -1,0 +1,13 @@
+Documentation? What's that? I only read the course notes. Anyway, here's some help with command syntax.
+
+`!help` -- displays this text
+`!ask [description of your problem]` -- adds your question to a queue which the TAs will be going through (akin to the OH Queue).
+
+--------
+
+admin help:
+!rt name:`team_name` [list of pings for users on team]
+or equivalently
+!register_team with the same syntax
+
+!announce \`\`\` your announcement \`\`\`
