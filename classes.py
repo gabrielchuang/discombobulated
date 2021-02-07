@@ -7,11 +7,6 @@ dbname = meta[1]
 
 class Team():
 	def __init__(self, message, client): 
-		# attributes: 
-		#	channel (channel object), client (client object)
-		# 	team_ID, name, channel_ID, num_hints, paused
-		#	solved_puzzles, unlocked_puzzles, unsolved_puzzles
-
 		self.message = message
 		self.channel = message.channel
 		self.client = client
@@ -29,4 +24,3 @@ class Team():
 
 		#haha timezones go brr
 		self.now = (message.created_at+datetime.timedelta(hours=-4)).isoformat(sep=' ', timespec='seconds')
-		print(self.now)
