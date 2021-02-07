@@ -6,9 +6,6 @@ from classes import *
 import random
 import json
 
-hintchannel_ID = int(meta[2])
-
-
 with open('meta.json') as f:
 	meta = json.load(f)
 dbname = meta["dbname"]
@@ -17,7 +14,7 @@ dbname = meta["dbname"]
 client = discord.Client()
 cc = '!' # command character
 
-auth_admins = [int(x) for x in admin_IDs.split(',')]
+auth_admins = [228337766142836750]
 
 async def send_help(team):
 	helptext = open('helptext.txt').read().split('--------')
@@ -41,14 +38,20 @@ async def process_request(team):
 
 	await team.channel.send(f"Your question has been added to the queue. A TA will be along shortly!")
 
-	request = f"**Question #{lastreqnum+1}**\n**Team**: {team.name}\n**Link**: {team.message.jump_url}\n```{request_text}```" + 
-		"Please react ✅ to this message to indicate that you will be taking this question! "
+	request = f"**Question #{lastreqnum+1}**\n**Team**: {team.name}\n**Link**: {team.message.jump_url}\n```{request_text}```" + \
+		"Question unclaimed. Please react ✅ to this message to indicate that you will be taking this question! "
 	help_message = await hint_channel.send(request)
 
+	c.execute('''SELECT count(*) from requests where complete = 0''')
+	num_in_queue =c.fetchall()[0][0]
+	
 	c.execute(''' INSERT INTO requests VALUES(?,?,?,?,?,?)''', (team.name, team.now, request_text, lastreqnum+1, 0, help_message.id))
+
 	conn.commit()
 	c.close()
 	conn.close()
+
+	await help_message.add_reaction("✅")
 
 async def sudo(message, client): 
 	query = re.findall('```(?P<ch>.*?)```', message.content)[0]
@@ -61,8 +64,19 @@ async def sudo(message, client):
 
 async def reg_team(message, client):
 	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
-	channel = await message.guild.create_text_channel(team_name, category=message.channel.category)
-	vc_channel = await message.guild.create_voice_channel(team_name+"-voice", category=message.channel.category)
+
+	categ = None
+	for cat_id in meta["hacker-channel-category"]:
+		if len(client.get_channel(cat_id).channels) < 48:
+			categ = client.get_channel(cat_id)
+			break
+	if categ == None:
+		await message.channel.send("There isn't enough space in the allotted categories to create new channels. Please make a new category and ping @ezekiel.")
+		return
+
+
+	channel = await message.guild.create_text_channel(team_name, category=categ)
+	vc_channel = await message.guild.create_voice_channel(team_name+"-voice", category=categ)
 
 	admin_role = message.guild.get_role(meta["admin-role"])
 	mentor_role = message.guild.get_role(meta["mentor-role"])
@@ -123,9 +137,29 @@ async def announce(message, client):
 general_commands = {'help':send_help, 'ask':process_request}
 admin_commands = {'sudo':sudo, 'register_team':reg_team, 'rt':reg_team, 'reset':reset, 'adminhelp':admin_help, 'announce':announce}
 
+@client.event
+async def on_reaction_add(reaction, user):
+	print('hi')
+	print(reaction.emoji)
+	print(str(reaction.emoji) == "✅")
+	if str(reaction.emoji) == "✅" and user != user.guild.me:
+		conn = sqlite3.connect(dbname)
+		c = conn.cursor()
+		c.execute(''' SELECT * FROM requests WHERE message_ID=?''', (reaction.message.id,))
+		f = c.fetchall()
+		if len(f) == 1:
+			f = f[0]
+			c.execute('''delete from requests where message_ID=?''', (reaction.message.id,))
+			c.execute(''' INSERT INTO requests VALUES(?,?,?,?,?,?)''', (f[0], f[1], f[2], f[3], 1, f[5]))
+			conn.commit()
+			c.close()
+			conn.close()
 
-async def on_raw_reaction_add(payload):
-	pass
+			msg = f"**Question #{f[3]}**\n**Team**: {f[0]}\n```{f[2]}```" + \
+				f"✅ question taken by {str(user)}! "
+			await reaction.message.edit(content=msg)
+
+
 
 @client.event
 async def on_message(message):
@@ -136,7 +170,7 @@ async def on_message(message):
 				await general_commands[cmd](team)
 				break 
 		for cmd in admin_commands.keys():
-			if cc+cmd in message.content and message.author.id in auth_admins and message.channel.id==hintchannel_ID:
+			if cc+cmd in message.content and message.author.id in auth_admins and message.channel.id==meta["admin-channel"]:
 				await admin_commands[cmd](message, client)
 				break 
 

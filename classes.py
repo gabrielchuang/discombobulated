@@ -1,9 +1,12 @@
 import discord
 import sqlite3
+import json
 import datetime
 
-meta = open('meta.txt').read().split()
-dbname = meta[1]
+with open('meta.json') as f:
+	meta = json.load(f)
+dbname = meta["dbname"]
+
 
 class Team():
 	def __init__(self, message, client): 
