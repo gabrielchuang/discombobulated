@@ -161,10 +161,6 @@ async def announce(message, client):
 	c.close()
 	conn.close()
 
-general_commands = {'help':send_help, 'ask':process_request, 'whereami':whereami}
-admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce}
-superadmin_commands = {'sudo':sudo, 'reset':reset}
-
 @client.event
 async def on_reaction_add(reaction, user):
 	if str(reaction.emoji) == "✅" and user != user.guild.me:
@@ -185,6 +181,21 @@ async def on_reaction_add(reaction, user):
 			await reaction.message.edit(content=msg, embeds=[])
 
 
+
+# --------------
+
+#sample info function
+def info(team): 
+	await team.channel.send("insert your text here!") 
+	#you could also use an embed: see discord.py API. 
+
+
+#to add commands that anyone can use: write a function, and add it here. 
+general_commands = {'help':send_help, 'ask':process_request, 'whereami':whereami, 'info':info}
+
+#to add admin or super-admin commands, add it here
+admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce}
+superadmin_commands = {'sudo':sudo, 'reset':reset}
 
 @client.event
 async def on_message(message):
