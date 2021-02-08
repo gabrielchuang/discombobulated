@@ -1,5 +1,5 @@
 # discombobulated
-A simple discord bot for helping with CMU's Hack112 hackathon (run remotely due to COVID, in Fall 2020)
+A simple discord bot for helping with CMU's Hack112 hackathon (run remotely due to COVID, in Fall 2020) and TartanHacks 2021.
 
 Functions: 
 * Office hours-style queue for requesting help from event mentors
