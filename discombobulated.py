@@ -8,9 +8,11 @@ import json
 
 with open('meta-TH.json') as f:
 	meta = json.load(f)
+with open('token.json') as tk:
+	token = json.load(tk)
+
 
 dbname = meta["dbname"]
-
 
 client = discord.Client()
 cc = '!' # command character
@@ -208,4 +210,4 @@ async def on_ready():
 	print(client.user.name)
 	print(client.user.id)
 
-client.run(meta["token"])
+client.run(token["token"])
