@@ -6,7 +6,7 @@ from classes import *
 import random
 import json
 
-with open('meta-testing.json') as f:
+with open('meta-TH.json') as f:
 	meta = json.load(f)
 
 dbname = meta["dbname"]
@@ -15,7 +15,7 @@ dbname = meta["dbname"]
 client = discord.Client()
 cc = '!' # command character
 
-auth_admins = [228337766142836750]
+superadmins = meta['superadmins']
 
 async def send_help(team):
 	helptext = open('helptext.txt').read().split('--------')
@@ -160,7 +160,8 @@ async def announce(message, client):
 	conn.close()
 
 general_commands = {'help':send_help, 'ask':process_request, 'whereami':whereami}
-admin_commands = {'sudo':sudo, 'register_team':reg_team, 'rt':reg_team, 'reset':reset, 'adminhelp':admin_help, 'announce':announce}
+admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce}
+superadmin_commands = {'sudo':sudo, 'reset':reset}
 
 @client.event
 async def on_reaction_add(reaction, user):
@@ -192,8 +193,12 @@ async def on_message(message):
 				await general_commands[cmd](team)
 				break 
 		for cmd in admin_commands.keys():
-			if cc+cmd in message.content and message.author.id in auth_admins and message.channel.id==meta["admin-channel"]:
+			if cc+cmd in message.content and any([x.id == meta["admin-role"] for x in message.author.roles]) and message.channel.id==meta["admin-channel"]:
 				await admin_commands[cmd](message, client)
+				break 
+		for cmd in superadmin_commands.keys():
+			if cc+cmd in message.content and message.author.id in superadmins and message.channel.id==meta["admin-channel"]:
+				await superadmin_commands[cmd](message, client)
 				break 
 
 
