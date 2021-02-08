@@ -3,7 +3,7 @@ import sqlite3
 import json
 import datetime
 
-with open('meta.json') as f:
+with open('meta-testing.json') as f:
 	meta = json.load(f)
 dbname = meta["dbname"]
 

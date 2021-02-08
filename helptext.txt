@@ -1,7 +1,6 @@
-Documentation? What's that? I only read the course notes. Anyway, here's some help with command syntax.
-
 `!help` -- displays this text
-`!ask [description of your problem]` -- adds your question to a queue which the TAs will be going through (akin to the OH Queue).
+`!ask [description of your problem]` -- adds your question to a Mentors queue.
+`!whereami [the question number]` -- displays your position on the queue. 
 
 --------
 
@@ -11,3 +10,5 @@ or equivalently
 !register_team with the same syntax
 
 !announce \`\`\` your announcement \`\`\`
+
+!reset (* USE WITH GREAT CAUTION *): wipes the database. 
