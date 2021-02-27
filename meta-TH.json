@@ -1,8 +1,16 @@
 {"token":"",
-"dbname":"tartanhacks.db",
-"mentors-channel":786725629839933490,
-"admin-channel":808128971044159498,
-"admin-role":786723366827982889,
-"mentor-role":786723385660538880,
-"hacker-channel-category":[786724705871986758],
-"superadmins":[228337766142836750]}
+"_dbname":"tartanhacks.db",
+"_mentors-channel":786725629839933490,
+"_admin-channel":808128971044159498,
+"_admin-role":786723366827982889,
+"_mentor-role":786723385660538880,
+"_hacker-channel-category":[786724705871986758],
+"_superadmins":[228337766142836750],
+"dbname": "th-test.db",
+"superadmins": 390594223465824256,
+"mentors-channel": 810750263752785930,
+"hacker-channel-category": [810750406052675605],
+"admin-role": 810752696503107616,
+"mentor-role": 810752722314723387,
+"admin-channel": 810751277540835338
+}
