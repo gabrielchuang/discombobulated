@@ -12,6 +12,8 @@ with open('token.json') as tk:
 
 dbname = meta["dbname"]
 
+client = discord.Client()
+
 async def send_help(team):
 	helptext = open('helptext.txt').read().split('--------')
 	await team.channel.send(helptext[0])
@@ -66,3 +68,22 @@ async def whereami(team):
 		await team.channel.send(f"You are position {posn}/{queue_length} on the queue.")
 	except:
 		await team.channel.send("Sorry, that didn't work. Be sure to type a command of the form `!whereami 1234`, replacing `1234` with your question number.")
+
+@client.event
+async def on_reaction_add(reaction, user):
+	if str(reaction.emoji) == "✅" and user != user.guild.me:
+		conn = sqlite3.connect(dbname)
+		c = conn.cursor()
+		c.execute(''' SELECT * FROM requests WHERE message_ID=?''', (reaction.message.id,))
+		f = c.fetchall()
+		if len(f) == 1:
+			f = f[0]
+			c.execute('''delete from requests where message_ID=?''', (reaction.message.id,))
+			c.execute(''' INSERT INTO requests VALUES(?,?,?,?,?,?,?)''', (f[0], f[1], f[2], f[3], 1, f[5],f[6]))
+			conn.commit()
+			c.close()
+			conn.close()
+
+			msg = f"~~**Question #{f[3]}**\n**Team**: {f[0]}\n**Link**: <{f[6]}>~~```{f[2]}```" + \
+				f"✅ question taken by {str(user)}! "
+			await reaction.message.edit(content=msg, embeds=[])

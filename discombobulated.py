@@ -14,7 +14,6 @@ with open('token.json') as tk:
 
 dbname = meta["dbname"]
 
-client = discord.Client()
 cc = '!' # command character
 
 superadmins = meta['superadmins']
