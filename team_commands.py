@@ -15,7 +15,7 @@ dbname = meta["dbname"]
 client = discord.Client()
 
 async def send_help(team):
-	helptext = open('helptext.txt').read().split('--------')
+	helptext = open('texts/helptext.txt').read().split('--------')
 	await team.channel.send(helptext[0])
 
 

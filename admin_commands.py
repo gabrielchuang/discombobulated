@@ -14,7 +14,7 @@ dbname = meta["dbname"]
 # --------------
 
 async def admin_help(message, client):
-	helptext = open('helptext.txt').read().split('--------')
+	helptext = open('texts/helptext.txt').read().split('--------')
 	await message.channel.send(helptext[1])
 
 async def sudo(message, client):
@@ -35,7 +35,7 @@ async def reg_team(message, client):
 			categ = client.get_channel(cat_id)
 			break
 	if categ == None:
-		await message.channel.send("There isn't enough space in the allotted categories to create new channels. Please make a new category and ping @ezekiel.")
+		await message.channel.send("There isn't enough space in the allotted categories to create new channels. Please make a new category and ping Keiffer.")
 		return
 
 	nchans = len(client.get_channel(cat_id).channels)
@@ -67,7 +67,9 @@ async def reg_team(message, client):
 	await message.channel.send(f"Registered team `{team_name}`, with users " + ", ".join([str(x) for x in message.mentions]) +
 		". Please check that you successfully pinged every member: if you missed some (either due to a typo or because " +
 		"they're not on the server yet), you will have to manually give them permissions to read and send messages (in the text channels) " +
-		"and connect and speak (in the voice channels).")
+		"and connect and speak (in the voice channels). Please ping Keiffer for any details on this.")
+
+	await channel.send("hello, world!")
 
 
 async def reset(message, client):
