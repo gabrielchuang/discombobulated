@@ -27,6 +27,7 @@ async def sudo(message, client):
 	conn.close()
 
 async def reg_team(message, client):
+	helptext = open('texts/helptext.txt').read().split('--------')
 	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
 
 	categ = None
@@ -69,7 +70,12 @@ async def reg_team(message, client):
 		"they're not on the server yet), you will have to manually give them permissions to read and send messages (in the text channels) " +
 		"and connect and speak (in the voice channels). Please ping Keiffer for any details on this.")
 
-	await channel.send("hello, world!")
+	await channel.send(f"🎉 __**Welcome, Team {team_name}!**__ 🎉\n\nThis is your personal space to talk and " +
+	"collaborate amongst your teammates. This text channel, along with the corresponding voice channel, " +
+	"are accessible only by the members of this team, as well as organizers for any logistical issues " +
+	"and mentors for any help needed. A list commands you can use specific to this channel are:\n\n" +
+	helptext[0] +
+	"\nIf any members are missing or if there are any logistical issues, please ping the Organizers.")
 
 
 async def reset(message, client):
