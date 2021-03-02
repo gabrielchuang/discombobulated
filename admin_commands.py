@@ -3,6 +3,7 @@ import sqlite3
 import re
 from classes import *
 import json
+import requests
 
 with open('meta-TH.json') as f:
 	meta = json.load(f)
@@ -25,6 +26,27 @@ async def sudo(message, client):
 	conn.commit()
 	c.close()
 	conn.close()
+
+async def check(message, client):
+	email = message.content.split('!check ')[1]
+	url = 'https://thd-api.herokuapp.com/participants/get'
+	dash_token = token['dashboard-token']
+	headers = {'Token': dash_token}
+	data = {'email': email}
+
+	response = requests.post(url, headers=headers, data=data)
+
+	if (response.status_code == 200):
+		participant = response.json()[0]
+		name = participant['name']
+		team = participant['team_id']
+		await message.channel.send(f"✅ Found! This participant's name is {name} with team {team}")
+	if (response.status_code == 401):
+		await message.channel.send("❌ The dashboard access token has expired!")
+	elif (response.status_code == 404):
+		await message.channel.send("❌ Could not find the participant.")
+	elif (response.status_code == 500):
+		await message.channel.send("❌ Some internal server error code. Try again later or contact the tech team.")
 
 async def reg_team(message, client):
 	helptext = open('texts/helptext.txt').read().split('--------')
