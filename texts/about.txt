@@ -1,0 +1,1 @@
+This bot was created to help manage the TartanHacks v10 Discord server! It was originally created by CMU student Gabriel Chuang.

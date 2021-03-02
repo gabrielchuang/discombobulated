@@ -1,0 +1,3 @@
+`tartanhacks.com` -- The TartanHacks main website!
+`href.scottylabs.org/hopin` -- The Hopin page for TartanHacks.
+`http://dashboard.tartanhacks.com/` -- The TartanHacks dashboard, letting you keep track of all your personal statistics for this hackathon.

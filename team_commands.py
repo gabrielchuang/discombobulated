@@ -15,14 +15,14 @@ dbname = meta["dbname"]
 client = discord.Client()
 
 async def send_help(team):
-	helptext = open('texts/helptext.txt').read().split('--------')
-	await team.channel.send(helptext[0])
+	helptext = open('texts/team_text.txt').read()
+	await team.channel.send(helptext)
 
 
 async def process_request(team):
 	conn = sqlite3.connect(dbname)
 	c = conn.cursor()
-	request_text = team.message.content
+	request_text = team.message.content.split('!ask ')[1]
 
 	hint_channel = team.client.get_channel(meta["mentors-channel"])
 

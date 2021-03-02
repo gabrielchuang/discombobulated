@@ -21,18 +21,22 @@ superadmins = meta['superadmins']
 # --------------
 
 #to add commands anyone can use, add it here
-general_commands = {}
+general_commands = {'checkin':checkin, 'help':help, "about":about, "links":links}
 
 #to add commands specific to a team: write a function, and add it here.
-team_commands = {'help':send_help, 'ask':process_request, 'whereami':whereami}
+team_commands = {'teamhelp':send_help, 'ask':process_request, 'whereami':whereami}
 
 #to add admin or super-admin commands, add it here
-admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce, 'check':check, 'refresh':refresh}
+admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help}
 superadmin_commands = {'sudo':sudo, 'reset':reset}
 
 @client.event
 async def on_message(message):
 	if message.author != message.guild.me and message.content[0] == cc:
+		for cmd in general_commands.keys():
+			if cc+cmd in message.content:
+				await general_commands[cmd](message, client)
+				break
 		for cmd in team_commands.keys():
 			if cc+cmd in message.content:
 				team = Team(message, client)

@@ -1,0 +1,3 @@
+- `!teamhelp` -- displays this .
+- `!ask [description of your problem]` -- adds your problem to the Mentor Queue, allowing one of our mentors to see and assist you.
+- `!whereami [the question number]` -- displays your position on the queue.

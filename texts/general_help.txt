@@ -1,0 +1,3 @@
+`!help` -- displays this text.
+`!about` -- about this bot!
+`!links` -- some links to navigate your TartanHacks experience.

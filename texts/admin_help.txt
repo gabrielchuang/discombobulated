@@ -1,0 +1,9 @@
+adminhelp:
+`!adminhelp` -- displays this text
+``!register_team `<team_name>` [list of pings for users on team]`` -- registers a new team with the given team name and users
+``!rt `<team_name>` [list of pings for users on team]`` -- alias for !register_team
+`!check <email>` -- Checks to see if the user with the given email is a registered hacker, and if so return their name and team name.
+
+!announce \`\`\` your announcement \`\`\`
+
+!reset (* USE WITH GREAT CAUTION *): wipes the database.
