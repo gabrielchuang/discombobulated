@@ -27,7 +27,7 @@ general_commands = {}
 team_commands = {'help':send_help, 'ask':process_request, 'whereami':whereami}
 
 #to add admin or super-admin commands, add it here
-admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce, 'check':check}
+admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help, 'announce':announce, 'check':check, 'refresh':refresh}
 superadmin_commands = {'sudo':sudo, 'reset':reset}
 
 @client.event

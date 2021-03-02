@@ -8,9 +8,11 @@ import requests
 with open('meta-TH.json') as f:
 	meta = json.load(f)
 with open('token.json') as tk:
-	token = json.load(tk)
+	tokens = json.load(tk)
 
-dbname = meta["dbname"]
+dbname = meta['dbname']
+token = tokens['token']
+dash_token = tokens['dashboard_token']
 
 # --------------
 
@@ -30,7 +32,6 @@ async def sudo(message, client):
 async def check(message, client):
 	email = message.content.split('!check ')[1]
 	url = 'https://thd-api.herokuapp.com/participants/get'
-	dash_token = token['dashboard-token']
 	headers = {'Token': dash_token}
 	data = {'email': email}
 
@@ -64,8 +65,8 @@ async def reg_team(message, client):
 	nchans = len(client.get_channel(cat_id).channels)
 	print(nchans)
 
-	channel = await message.guild.create_text_channel(team_name, category=categ)
-	vc_channel = await message.guild.create_voice_channel(team_name+"-voice", category=categ)
+	channel = await message.guild.create_text_channel("🐧"+team_name, category=categ)
+	vc_channel = await message.guild.create_voice_channel("🛠"+team_name+"-voice", category=categ)
 
 	admin_role = message.guild.get_role(meta["admin-role"])
 	mentor_role = message.guild.get_role(meta["mentor-role"])
