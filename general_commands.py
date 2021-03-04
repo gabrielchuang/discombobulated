@@ -48,4 +48,4 @@ async def checkin(message, client):
 		await user.add_roles(hacker_role)
 		await message.channel.send("✅ Checked in! You now have access to the rest of the server.")
 	else:
-		await message.channel.send("❌ We weren't able to find you! Make sure that you've been registered, otherwise ping the Organizers if there is an issue.")
+		await message.channel.send("❌ We weren't able to find you! Make sure that you've been registered, otherwise ping the @On-call if there is an issue.")
