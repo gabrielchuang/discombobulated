@@ -1,3 +1,4 @@
 `!help` -- displays this text.
 `!about` -- about this bot!
 `!links` -- some links to navigate your TartanHacks experience.
+``register_team `TEAMNAME` @user1 @user2 ...`` -- use this command in #team-creation to form private channels for your team, allowing you to use our Mentor Queue!

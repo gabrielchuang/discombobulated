@@ -1,4 +1,5 @@
 import discord
+import re
 import sqlite3
 from classes import *
 import json
@@ -18,6 +19,60 @@ async def send_help(team):
 	helptext = open('texts/team_text.txt').read()
 	await team.channel.send(helptext)
 
+async def reg_team(message, client):
+	helptext = open('texts/team_help.txt').read()
+	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
+
+	for user in message.mentions:
+		if not any([x.id == meta["hacker-role"] for x in user.roles]):
+			await message.channel.send("❌At least one user here does not have the Hacker role! Please make sure they have checked in to the server and try again.")
+			return
+
+	categ = None
+	for cat_id in meta["hacker-channel-category"]:
+		if len(client.get_channel(cat_id).channels) < 48:
+			categ = client.get_channel(cat_id)
+			break
+	if categ == None:
+		await message.channel.send("❌There isn't enough space in the allotted categories to create new channels. Please make a new category and ping @On-call.")
+		return
+
+	nchans = len(client.get_channel(cat_id).channels)
+	print(nchans)
+
+	channel = await message.guild.create_text_channel("🐧"+team_name, category=categ)
+	vc_channel = await message.guild.create_voice_channel("🛠"+team_name+"-voice", category=categ)
+
+	admin_role = message.guild.get_role(meta["admin-role"])
+	mentor_role = message.guild.get_role(meta["mentor-role"])
+	await channel.set_permissions(mentor_role, read_messages=True, send_messages=True)
+	await vc_channel.set_permissions(mentor_role, connect=True, speak=True, view_channel=True)
+
+	for user in message.mentions:
+		await channel.set_permissions(user, read_messages=True, send_messages=True)
+		await vc_channel.set_permissions(user, connect=True, speak=True, view_channel=True)
+
+	await channel.set_permissions(message.guild.me, read_messages=True, send_messages=True)
+	await channel.set_permissions(message.guild.default_role, read_messages=False, send_messages=False)
+	await vc_channel.set_permissions(message.guild.default_role, connect=False, speak=False, view_channel=False)
+
+	conn = sqlite3.connect(dbname)
+	c = conn.cursor()
+	c.execute(''' INSERT into teams values(?,?,?)''', (team_name,channel.id,vc_channel.id))
+	conn.commit()
+	c.close()
+	conn.close()
+
+	await message.channel.send(f"✅Registered team `{team_name}`, with users " + ", ".join([str(x) for x in message.mentions]) +
+		", and private channels have been created. Please check that you successfully pinged every member: if you missed some (either due to a typo or because " +
+		"they're not on the server yet), please ping @On-call and they will manually add the missing team members. DO NOT try to register the team again!")
+
+	await channel.send(f"🎉 __**Welcome, Team {team_name}!**__ 🎉\n\nThis is your personal space to talk and " +
+	"collaborate amongst your teammates. This text channel, along with the corresponding voice channel, " +
+	"are accessible only by the members of this team, as well as organizers for any logistical issues " +
+	"and mentors for any help needed. A list of commands you can use that are specific to this channel are:\n\n" +
+	helptext +
+	"\nIf any members are missing or if there are any logistical issues, please ping @On-call.")
 
 async def process_request(team):
 	conn = sqlite3.connect(dbname)

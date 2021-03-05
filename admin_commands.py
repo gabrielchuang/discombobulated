@@ -78,7 +78,7 @@ async def reg_team(message, client):
 	"are accessible only by the members of this team, as well as organizers for any logistical issues " +
 	"and mentors for any help needed. A list of commands you can use that are specific to this channel are:\n\n" +
 	helptext +
-	"\nIf any members are missing or if there are any logistical issues, please ping the Organizers.")
+	"\nIf any members are missing or if there are any logistical issues, please ping @On-call.")
 
 
 async def reset(message, client):

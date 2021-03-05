@@ -26,6 +26,9 @@ general_commands = {'checkin':checkin, 'help':help, "about":about, "links":links
 #to add commands specific to a team: write a function, and add it here.
 team_commands = {'teamhelp':send_help, 'ask':process_request, 'whereami':whereami}
 
+#commands only those with the hacker command can use
+hacker_commands = {'register_team':reg_team, 'rt':reg_team}
+
 #to add admin or super-admin commands, add it here
 admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help}
 superadmin_commands = {'sudo':sudo, 'reset':reset}
@@ -41,6 +44,10 @@ async def on_message(message):
 			if cc+cmd in message.content:
 				team = Team(message, client)
 				await team_commands[cmd](team)
+				break
+		for cmd in hacker_commands.keys():
+			if cc+cmd in message.content and any([x.id == meta["hacker-role"] for x in message.author.roles]):
+				await hacker_commands[cmd](message, client)
 				break
 		for cmd in admin_commands.keys():
 			if cc+cmd in message.content and any([x.id == meta["admin-role"] for x in message.author.roles]) and message.channel.id==meta["admin-channel"]:
