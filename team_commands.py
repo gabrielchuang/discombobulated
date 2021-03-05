@@ -20,6 +20,8 @@ async def send_help(team):
 	await team.channel.send(helptext)
 
 async def reg_team(message, client):
+	if (message.channel.id != meta['team-create-channel']):
+		return
 	helptext = open('texts/team_help.txt').read()
 	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
 
