@@ -19,7 +19,7 @@ async def send_help(team):
 	helptext = open('texts/team_text.txt').read()
 	await team.channel.send(helptext)
 
-async def reg_team(message, client):
+async def reg_team_hacker(message, client):
 	if (message.channel.id != meta['team-create-channel']):
 		return
 	helptext = open('texts/team_help.txt').read()

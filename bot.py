@@ -27,7 +27,7 @@ general_commands = {'checkin':checkin, 'help':help, "about":about, "links":links
 team_commands = {'teamhelp':send_help, 'ask':process_request, 'whereami':whereami}
 
 #commands only those with the hacker command can use
-hacker_commands = {'register_team':reg_team, 'rt':reg_team}
+hacker_commands = {'register_team':reg_team_hacker, 'rt':reg_team_hacker}
 
 #to add admin or super-admin commands, add it here
 admin_commands = {'register_team':reg_team, 'rt':reg_team, 'adminhelp':admin_help}
