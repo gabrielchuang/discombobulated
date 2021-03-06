@@ -25,6 +25,10 @@ async def reg_team_hacker(message, client):
 	helptext = open('texts/team_help.txt').read()
 	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
 
+	if (not message.mentions):
+		await message.channel.send("❌I don't see anyone here! Please ping everyone from your team and try again.")
+		return
+
 	for user in message.mentions:
 		if not any([x.id == meta["hacker-role"] for x in user.roles]):
 			await message.channel.send("❌At least one user here does not have the Hacker role! Please make sure they have checked in to the server and try again.")

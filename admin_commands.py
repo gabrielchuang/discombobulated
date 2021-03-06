@@ -33,6 +33,10 @@ async def reg_team(message, client):
 	helptext = open('texts/team_help.txt').read()
 	team_name = re.findall('`#?(?P<ch>.*?)`', message.content)[0]
 
+	if (not message.mentions):
+		await message.channel.send("❌I don't see anyone here! Please ping everyone from your team and try again.")
+		return
+
 	categ = None
 	for cat_id in meta["hacker-channel-category"]:
 		if len(client.get_channel(cat_id).channels) < 48:
