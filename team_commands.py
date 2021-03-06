@@ -86,6 +86,7 @@ async def process_request(team):
 	request_text = team.message.content.split('!ask ')[1]
 
 	hint_channel = team.client.get_channel(meta["mentors-channel"])
+	mentor_role = team.message.guild.get_role(meta["mentor-role"])
 
 	c.execute(''' SELECT MAX(number) from requests ''')
 	lastreqnum = c.fetchall()[0][0]
@@ -93,8 +94,8 @@ async def process_request(team):
 		lastreqnum = 0
 
 
-	request = f"**Question #{lastreqnum+1}**\n**Team**: {team.name}\n**Link**: {team.message.jump_url}\n```{request_text}```" + \
-		"Question unclaimed. Please react ✅ to this message to indicate that you will be taking this question! "
+	request = f"{mentor_role.mention}\n**Question #{lastreqnum+1}**\n**Team**: {team.name}\n**Link**: {team.message.jump_url}\n```{request_text}```" + \
+		"Question unclaimed. Please press ✅ below this message to indicate that you will be taking this question! "
 	help_message = await hint_channel.send(request)
 
 	c.execute('''SELECT count(*) from requests where complete = 0''')
